@@ -1,28 +1,36 @@
 import { useState } from "react";
 import { Form, Row, Button } from "react-bootstrap";
 import { Phone } from "../models/Phone";
-import { SearchPhones } from "../services/phoneservice";
+import { GetPhones, SearchPhones } from "../services/phoneservice";
 type SearchFormProps = {
-    setPhones:(phones:Phone[]) => void
-}
-function SearchPhonesForm({setPhones}:SearchFormProps) {
-    const [min, setmin] = useState<number>(0);
-    const [max, setmax] = useState<number>(0);
-    function handleSearch()
-    {
-        SearchPhones({min,max})
-        .then((res) =>{
-            if(res.ok)
-            {
-                res.json()
-                .then(setPhones)
-            }
-            else
-            {
-                alert("Greska prilikom pretrage!")
-            }
-        }).catch((err) => console.log(err))
+  setPhones: (phones: Phone[]) => void;
+};
+function SearchPhonesForm({ setPhones }: SearchFormProps) {
+  const [min, setmin] = useState<number>(0);
+  const [max, setmax] = useState<number>(0);
+  function handleSearch() {
+    if (min === 0 && max === 0) {
+      GetPhones()
+        .then((res) => {
+          if (res.ok) {
+            res.json().then(setPhones);
+          } else {
+            alert("Greska prilikom pretrage!");
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      SearchPhones({ min, max })
+        .then((res) => {
+          if (res.ok) {
+            res.json().then(setPhones);
+          } else {
+            alert("Greska prilikom pretrage!");
+          }
+        })
+        .catch((err) => console.log(err));
     }
+  }
   return (
     <>
       <Form>

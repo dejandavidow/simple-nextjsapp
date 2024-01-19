@@ -14,7 +14,7 @@ function AddForm({ manufacturers, setphoneAdded }: FormProps) {
   const [price, setprice] = useState<number>(0);
   const [manufacturerId, setmanufacturerId] = useState<number>(0);
   const [validated, setValidated] = useState<boolean>(false);
-  function handleSubmit(event: SyntheticEvent) {
+  function handleSubmit(event: SyntheticEvent & any) {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -27,7 +27,7 @@ function AddForm({ manufacturers, setphoneAdded }: FormProps) {
           if (res.ok) {
             setphoneAdded(true);
             ResetForm();
-            setValidated(false)
+            setValidated(false);
           } else {
             alert("Greska prilikom dodavanja telefona!");
           }
@@ -43,6 +43,7 @@ function AddForm({ manufacturers, setphoneAdded }: FormProps) {
     setprice(0);
     setmanufacturerId(0);
     setsize(0);
+    setValidated(false)
   }
   return (
     <>
@@ -73,7 +74,7 @@ function AddForm({ manufacturers, setphoneAdded }: FormProps) {
               onChange={(e) => setOperatingSystem(e.target.value)}
               required
             />
-             <Form.Control.Feedback type="invalid">
+            <Form.Control.Feedback type="invalid">
               Unesite operativni sistem telefona
             </Form.Control.Feedback>
           </Form.Group>
@@ -89,8 +90,8 @@ function AddForm({ manufacturers, setphoneAdded }: FormProps) {
             />
           </Form.Group>
           <Form.Control.Feedback type="invalid">
-              Unesite kolicinu telefona
-            </Form.Control.Feedback>
+            Unesite kolicinu telefona
+          </Form.Control.Feedback>
         </Row>
         <Row className="justify-content-center">
           <Form.Group className="mb-3 col-lg-3" controlId="cena">
@@ -103,7 +104,7 @@ function AddForm({ manufacturers, setphoneAdded }: FormProps) {
               required
               min={1}
             />
-             <Form.Control.Feedback type="invalid">
+            <Form.Control.Feedback type="invalid">
               Cena mora biti veca od nule
             </Form.Control.Feedback>
           </Form.Group>
@@ -114,10 +115,9 @@ function AddForm({ manufacturers, setphoneAdded }: FormProps) {
             <Form.Select
               id="manufacturer"
               onChange={(e) => setmanufacturerId(+e.currentTarget.value)}
-              value={manufacturerId}
               required
-            >
-              <option selected value="">Izaberi</option>
+              value={manufacturerId}            >
+              <option value={""}>Izaberi</option>
               {manufacturers.map((manufacturer) => {
                 return (
                   <option key={manufacturer.id} value={manufacturer.id}>
