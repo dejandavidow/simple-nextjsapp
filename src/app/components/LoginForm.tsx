@@ -42,7 +42,7 @@ function LoginForm({ setShowLogin,setIsLogged}: LoginProps) {
       <h2 className="text-center">Prijava korisnika</h2>
       <Form>
         <Row className="justify-content-center">
-          <Form.Group className="mb-3 col-lg-3" controlId="formBasicEmail">
+          <Form.Group className="mb-3 col-lg-3" controlId="username">
             <Form.Label>Username</Form.Label>
             <Form.Control
               type="text"
@@ -53,7 +53,7 @@ function LoginForm({ setShowLogin,setIsLogged}: LoginProps) {
           </Form.Group>
         </Row>
         <Row className="justify-content-center">
-          <Form.Group className="mb-3 col-lg-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3 col-lg-3" controlId="password">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"

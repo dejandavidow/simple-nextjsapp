@@ -1,11 +1,27 @@
 "use client";
 import { Button, Table } from "react-bootstrap";
 import { Phone } from "../models/Phone";
+import { SyntheticEvent } from "react";
+import { DeletePhone } from "../services/phoneservice";
+import { useRouter } from "next/navigation";
 type Tableprops = {
   phones: Phone[];
-  isLogged:boolean
+  isLogged: boolean;
+  setphoneAdded: (c: boolean) => void;
 };
-function PhonesTable({ phones,isLogged}: Tableprops) {
+function PhonesTable({ phones, isLogged, setphoneAdded }: Tableprops) {
+  const router = useRouter();
+  function handleDelete(e: SyntheticEvent) {
+    DeletePhone(+e.currentTarget.id)
+      .then((res) => {
+        if (res.ok) {
+          setphoneAdded(true);
+        } else {
+          alert("Greska prilikom brisanja telefona!");
+        }
+      })
+      .catch((err) => console.log(err));
+  }
   return (
     <>
       <h2 className="mt-5 text-center">Telefoni</h2>
@@ -31,7 +47,21 @@ function PhonesTable({ phones,isLogged}: Tableprops) {
                 {isLogged && <td>{phone.operatingSystem}</td>}
                 {isLogged && (
                   <td>
-                    <Button variant="danger">Obrisi</Button>
+                    <Button
+                      id={phone.id.toString()}
+                      variant="danger"
+                      onClick={handleDelete}
+                    >
+                      Obrisi
+                    </Button>
+                    <Button
+                      id={phone.id.toString()}
+                      variant="warning"
+                      className="mx-1"
+                      onClick={(e) => router.push(`/edit/${e.currentTarget.id}`)}
+                    >
+                      Izmeni
+                    </Button>
                   </td>
                 )}
               </tr>
